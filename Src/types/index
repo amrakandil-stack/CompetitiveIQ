@@ -1,0 +1,74 @@
+export type UserRole = 'sales_engineer' | 'manager' | 'executive';
+
+export type Industry = 'buildings' | 'industry' | 'oil_gas' | 'utilities';
+
+export type ProductCategory = 'MCCB' | 'VFD' | 'PLC' | 'Contactor' | 'Relay' | 'Sensor' | 'HMI' | 'Drive';
+
+export type EquivalencyType = 'direct' | 'close_alternative' | 'use_case_alternative';
+
+export type ValidationStatus = 'pending' | 'approved' | 'rejected' | 'flagged';
+
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface Product {
+  id: string;
+  name: string;
+  manufacturer: string;
+  family: string;
+  category: ProductCategory;
+  specs: Record<string, string | number>;
+  certifications: string[];
+  applications: string[];
+  sourceUrl: string;
+  retrievalDate: string;
+  imageUrl?: string;
+}
+
+export interface Equivalency {
+  id: string;
+  schneiderProductId: string;
+  competitorProductId: string;
+  equivalencyType: EquivalencyType;
+  confidenceScore: number;
+  reasoning: string;
+  validationStatus: ValidationStatus;
+  validatedBy?: string;
+  validationNotes?: string;
+  flagged?: boolean;
+  flagReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Comparison {
+  id: string;
+  schneiderProduct: Product;
+  competitorProducts: Array<{
+    product: Product;
+    equivalency: Equivalency;
+  }>;
+  industry?: Industry;
+  generatedAt: string;
+  exportedPdf?: boolean;
+}
+
+export interface PriceBand {
+  level: 'low' | 'medium' | 'high';
+  confidence: ConfidenceLevel;
+}
+
+export interface RegionalData {
+  region: string;
+  standards: string[];
+  available: boolean;
+  competitiveIntensity: 'low' | 'medium' | 'high';
+}
+
+export interface DashboardStats {
+  totalProducts: number;
+  totalEquivalencies: number;
+  pendingValidations: number;
+  approvedEquivalencies: number;
+  averageConfidence: number;
+  recentUpdates: number;
+}
